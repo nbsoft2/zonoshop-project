@@ -1,6 +1,12 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
-import { dbOperations } from '../lib/db';
+import { getListings, type Listing } from '../lib/db';
+
+interface FeaturedListingsProps {
+  category?: string;
+  subcategory?: string;
+  showTrending?: boolean;
+}
 
 function formatPrice(price: number): string {
   return `UGX ${price.toLocaleString()}`;
@@ -10,14 +16,14 @@ function calculateDiscount(price: number, discountedPrice: number): number {
   return Math.round(((price - discountedPrice) / price) * 100);
 }
 
-function FeaturedListings() {
-  const [listings, setListings] = React.useState([]);
+function FeaturedListings({ category, subcategory, showTrending = true }: FeaturedListingsProps) {
+  const [listings, setListings] = React.useState<Listing[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const loadListings = async () => {
       try {
-        const data = await dbOperations.getProducts();
+        const data = getListings(category, subcategory);
         setListings(data);
       } catch (error) {
         console.error('Error loading listings:', error);
@@ -27,7 +33,7 @@ function FeaturedListings() {
     };
 
     loadListings();
-  }, []);
+  }, [category, subcategory]);
 
   if (loading) {
     return <div className="text-center py-8">Loading listings...</div>;
@@ -35,9 +41,11 @@ function FeaturedListings() {
 
   return (
     <div className="bg-white rounded-lg shadow-sm">
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold">Trending Ads</h2>
-      </div>
+      {showTrending && (
+        <div className="p-4 border-b">
+          <h2 className="text-lg font-semibold">Trending Ads</h2>
+        </div>
+      )}
       <div className="p-4">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {listings.map((listing) => (

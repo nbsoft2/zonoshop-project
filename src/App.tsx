@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingBag, Heart, MessageCircle, User, Menu, Plus, Gavel } from 'lucide-react';
+import { Toaster } from 'react-hot-toast';
 import CategoryBar from './components/CategoryBar';
 import FeaturedListings from './components/FeaturedListings';
 import HowItWorks from './components/HowItWorks';
@@ -8,6 +9,7 @@ import Footer from './components/Footer';
 import AddProduct from './components/AddProduct';
 import AuctionListings from './components/AuctionListings';
 import CategoryPage from './components/CategoryPage';
+import AuthModal from './components/AuthModal';
 
 function HomePage() {
   const handleSubcategorySelect = (category: string, subcategory: string) => {
@@ -16,8 +18,8 @@ function HomePage() {
 
   return (
     <>
-      {/* Search Bar */}
-      <div className="bg-white shadow-sm py-4 sticky top-16 z-40">
+      {/* Search Bar Above Hero */}
+      <div className="bg-white shadow-sm py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
             <div className="flex-1">
@@ -56,10 +58,8 @@ function HomePage() {
         {/* Categories and Listings */}
         <div className="flex gap-6">
           {/* Categories Column */}
-          <div className="w-64 flex-shrink-0">
-            <div className="sticky top-32">
-              <CategoryBar onSubcategorySelect={handleSubcategorySelect} />
-            </div>
+          <div className="w-64 flex-shrink-0 self-start">
+            <CategoryBar onSubcategorySelect={handleSubcategorySelect} />
           </div>
           
           {/* Listings Column */}
@@ -79,10 +79,13 @@ function HomePage() {
 
 function App() {
   const [showAddProduct, setShowAddProduct] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Toaster position="top-center" />
+      
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -111,9 +114,12 @@ function App() {
                 <MessageCircle className="h-5 w-5 mr-1" />
                 <span>Messages</span>
               </button>
-              <button className="flex items-center text-gray-700 hover:text-blue-600">
+              <button 
+                onClick={() => setShowAuthModal(true)}
+                className="flex items-center text-gray-700 hover:text-blue-600"
+              >
                 <User className="h-5 w-5 mr-1" />
-                <span>Account</span>
+                <span>Sign In</span>
               </button>
               <button
                 onClick={() => setShowAddProduct(true)}
@@ -142,6 +148,12 @@ function App() {
       </main>
 
       <Footer />
+
+      {/* Auth Modal */}
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+      />
     </div>
   );
 }

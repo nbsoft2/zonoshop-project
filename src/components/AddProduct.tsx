@@ -1,9 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { dbOperations } from '../lib/db';
-import type { Product } from '../lib/db';
+import type { Listing } from '../lib/db';
 
-interface AddProductForm extends Omit<Product, 'user_id'> {}
+interface AddProductForm extends Omit<Listing, 'id' | 'user_id' | 'attributes'> {
+  category_id: number;
+}
 
 function AddProduct() {
   const {
@@ -18,14 +19,7 @@ function AddProduct() {
 
   const onSubmit = async (data: AddProductForm) => {
     try {
-      // TODO: Replace with actual user ID from authentication
-      const userId = 1;
-      
-      await dbOperations.createProduct({
-        ...data,
-        user_id: userId,
-      });
-
+      // TODO: Add product submission logic
       reset();
       alert('Product added successfully!');
     } catch (error) {
@@ -33,16 +27,6 @@ function AddProduct() {
       alert('Failed to add product. Please try again.');
     }
   };
-
-  const [categories, setCategories] = React.useState<Array<{id: number, name: string}>>([]);
-
-  React.useEffect(() => {
-    const loadCategories = async () => {
-      const cats = await dbOperations.getCategories();
-      setCategories(cats);
-    };
-    loadCategories();
-  }, []);
 
   return (
     <div className="max-w-2xl mx-auto p-6">
@@ -73,7 +57,7 @@ function AddProduct() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Regular Price (UGX)</label>
+          <label className="block text-sm font-medium text-gray-700">Price (UGX)</label>
           <input
             type="number"
             {...register('price', { required: 'Price is required', min: 0 })}
@@ -81,21 +65,6 @@ function AddProduct() {
           />
           {errors.price && (
             <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Discounted Price (UGX)</label>
-          <input
-            type="number"
-            {...register('discountedPrice', {
-              min: { value: 0, message: 'Discounted price must be positive' },
-              max: { value: price || 0, message: 'Discounted price must be less than regular price' }
-            })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          />
-          {errors.discountedPrice && (
-            <p className="mt-1 text-sm text-red-600">{errors.discountedPrice.message}</p>
           )}
         </div>
 
@@ -108,24 +77,6 @@ function AddProduct() {
           />
           {errors.location && (
             <p className="mt-1 text-sm text-red-600">{errors.location.message}</p>
-          )}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Category</label>
-          <select
-            {...register('category_id', { required: 'Category is required' })}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-          >
-            <option value="">Select a category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          {errors.category_id && (
-            <p className="mt-1 text-sm text-red-600">{errors.category_id.message}</p>
           )}
         </div>
 

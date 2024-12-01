@@ -1,7 +1,6 @@
 import React from 'react';
 import { Heart, Clock } from 'lucide-react';
-import { dbOperations } from '../lib/db';
-import type { Auction } from '../lib/db';
+import { getListings, type Listing } from '../lib/db';
 
 function formatPrice(price: number): string {
   return `UGX ${price.toLocaleString()}`;
@@ -20,13 +19,13 @@ function getTimeLeft(endTime: Date): string {
 }
 
 function AuctionListings() {
-  const [auctions, setAuctions] = React.useState<Auction[]>([]);
+  const [auctions, setAuctions] = React.useState<Listing[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const loadAuctions = async () => {
       try {
-        const data = await dbOperations.getAuctions();
+        const data = getListings('auctions');
         setAuctions(data);
       } catch (error) {
         console.error('Error loading auctions:', error);
@@ -37,27 +36,6 @@ function AuctionListings() {
 
     loadAuctions();
   }, []);
-
-  const handleBid = async (auctionId: number) => {
-    const auction = auctions.find(a => a.id === auctionId);
-    if (!auction) return;
-
-    const bidAmount = prompt(`Enter your bid amount (current bid: ${formatPrice(auction.currentBid)})`);
-    if (!bidAmount) return;
-
-    const amount = parseInt(bidAmount.replace(/[^0-9]/g, ''));
-    if (isNaN(amount) || amount <= auction.currentBid) {
-      alert('Please enter a valid amount higher than the current bid');
-      return;
-    }
-
-    try {
-      const updatedAuction = await dbOperations.placeBid(auctionId, amount);
-      setAuctions(auctions.map(a => a.id === auctionId ? updatedAuction : a));
-    } catch (error) {
-      alert(error instanceof Error ? error.message : 'Failed to place bid');
-    }
-  };
 
   if (loading) {
     return <div className="text-center py-12">Loading auctions...</div>;
@@ -81,7 +59,7 @@ function AuctionListings() {
                 </button>
                 <div className="absolute top-2 left-2 bg-blue-600 text-white px-2 py-1 rounded-md text-sm font-bold flex items-center">
                   <Clock className="h-4 w-4 mr-1" />
-                  {getTimeLeft(new Date(auction.endTime))}
+                  {getTimeLeft(new Date(auction.attributes.endTime))}
                 </div>
               </div>
               <div className="p-4">
@@ -89,15 +67,17 @@ function AuctionListings() {
                 <div className="mb-2">
                   <div className="text-gray-600 text-sm mb-1">Current Bid:</div>
                   <span className="text-blue-600 font-bold text-lg">
-                    {formatPrice(auction.currentBid)}
+                    {formatPrice(auction.price)}
                   </span>
                   <div className="text-gray-500 text-sm mt-1">
-                    Starting at {formatPrice(auction.startingPrice)}
+                    Starting at {formatPrice(auction.attributes.startingPrice)}
                   </div>
                 </div>
                 <p className="text-gray-500 text-sm mb-4">{auction.location}</p>
                 <button
-                  onClick={() => handleBid(auction.id!)}
+                  onClick={() => {
+                    // Handle bid
+                  }}
                   className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
                 >
                   Place Bid

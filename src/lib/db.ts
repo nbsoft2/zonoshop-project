@@ -1,261 +1,218 @@
-// For now, we'll use in-memory storage since we don't have a proper database file
-let products: any[] = [
-  {
-    id: 1,
-    title: 'iPhone 13 Pro Max - 256GB',
-    description: 'Brand new, sealed in box',
-    price: 3500000,
-    discountedPrice: 3200000,
-    location: 'Kampala',
-    category_id: 3,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1632661674596-df8be070a5c5?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 2,
-    title: 'Modern 3 Bedroom Apartment',
-    description: 'Luxury apartment with great view',
-    price: 1200000,
-    discountedPrice: 1000000,
-    location: 'Entebbe',
-    category_id: 2,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 3,
-    title: 'Toyota Land Cruiser 2022',
-    description: 'Pristine condition, low mileage',
-    price: 85000000,
-    discountedPrice: 79000000,
-    location: 'Kampala',
-    category_id: 1,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1675707295681-de5ac4670ff6?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 4,
-    title: 'MacBook Pro M2 - 1TB',
-    description: 'Latest model, space gray',
-    price: 4500000,
-    discountedPrice: 4200000,
-    location: 'Kampala',
-    category_id: 4,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 5,
-    title: 'Designer Sofa Set',
-    description: 'Italian leather, 5-seater',
-    price: 2800000,
-    discountedPrice: 2400000,
-    location: 'Jinja',
-    category_id: 5,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 6,
-    title: 'Samsung 75" QLED TV',
-    description: '4K Ultra HD Smart TV',
-    price: 5500000,
-    discountedPrice: 4800000,
-    location: 'Kampala',
-    category_id: 4,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 7,
-    title: 'Luxury Office Space',
-    description: 'Prime location, fully furnished',
-    price: 3500000,
-    discountedPrice: 3200000,
-    location: 'Kampala',
-    category_id: 2,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 8,
-    title: 'Canon EOS R5 Camera',
-    description: 'Professional mirrorless camera',
-    price: 7200000,
-    discountedPrice: 6500000,
-    location: 'Entebbe',
-    category_id: 4,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 9,
-    title: 'Yamaha Grand Piano',
-    description: 'Concert quality instrument',
-    price: 12000000,
-    discountedPrice: 10500000,
-    location: 'Kampala',
-    category_id: 5,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 10,
-    title: 'Rolex Submariner',
-    description: 'Brand new, full set',
-    price: 25000000,
-    discountedPrice: 22000000,
-    location: 'Kampala',
-    category_id: 6,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 11,
-    title: 'Tesla Model 3',
-    description: '2023 model, fully loaded',
-    price: 95000000,
-    discountedPrice: 89000000,
-    location: 'Kampala',
-    category_id: 1,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1536700503339-1e4b06520771?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  },
-  {
-    id: 12,
-    title: 'Gaming PC Setup',
-    description: 'RTX 4090, i9 processor',
-    price: 8500000,
-    discountedPrice: 7800000,
-    location: 'Kampala',
-    category_id: 4,
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1587202372634-32705e3bf49c?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  }
-];
-
-let auctions: any[] = [
-  {
-    id: 1,
-    title: 'Vintage Rolex Watch',
-    description: 'Rare 1956 Rolex Submariner',
-    startingPrice: 15000000,
-    currentBid: 16500000,
-    endTime: new Date(Date.now() + 172800000), // 48 hours from now
-    location: 'Kampala',
-    user_id: 1,
-    image_url: 'https://images.unsplash.com/photo-1547996160-81dfa63595aa?auto=format&fit=crop&q=80&w=400',
-    status: 'active'
-  }
-];
-
-const categories = [
-  { id: 1, name: 'Vehicles', slug: 'vehicles' },
-  { id: 2, name: 'Property', slug: 'property' },
-  { id: 3, name: 'Mobile Phones', slug: 'mobile-phones' },
-  { id: 4, name: 'Electronics', slug: 'electronics' },
-  { id: 5, name: 'Home & Garden', slug: 'home-garden' },
-  { id: 6, name: 'Fashion', slug: 'fashion' },
-  { id: 7, name: 'Jobs', slug: 'jobs' },
-  { id: 8, name: 'Services', slug: 'services' },
-  { id: 9, name: 'Auctions', slug: 'auctions' }
-];
-
-export interface Product {
-  id?: number;
+// Category-specific database and types
+export interface Listing {
+  id: number;
   title: string;
   description: string;
   price: number;
-  discountedPrice?: number;
+  discountedPrice?: number | null;
   location: string;
   category_id: number;
+  subcategory: string;
   user_id: number;
   image_url: string;
-  status?: string;
+  attributes: Record<string, any>;
 }
 
-export interface Auction {
-  id?: number;
-  title: string;
-  description: string;
-  startingPrice: number;
-  currentBid: number;
-  endTime: Date;
-  location: string;
-  user_id: number;
-  image_url: string;
-  status?: string;
+export interface CategoryListings {
+  [category: string]: {
+    [subcategory: string]: Listing[];
+  };
 }
 
-export const dbOperations = {
-  async createProduct(product: Product) {
-    const newProduct = {
-      ...product,
-      id: products.length + 1,
-      status: 'active'
-    };
-    products.push(newProduct);
-    return newProduct;
+export const categoryListings: CategoryListings = {
+  vehicles: {
+    cars: [
+      {
+        id: 1,
+        title: 'Toyota Land Cruiser V8 2022',
+        description: 'Brand new, fully loaded, sunroof, leather seats',
+        price: 350000000,
+        discountedPrice: 340000000,
+        location: 'Kampala',
+        category_id: 1,
+        subcategory: 'cars',
+        user_id: 1,
+        image_url: 'https://images.unsplash.com/photo-1675707295681-de5ac4670ff6?auto=format&fit=crop&q=80&w=400',
+        attributes: {
+          make: 'Toyota',
+          model: 'Land Cruiser',
+          year: 2022,
+          mileage: 0,
+          transmission: 'Automatic',
+          fuel: 'Petrol',
+          condition: 'Brand New',
+          color: 'White',
+          engineSize: '4.6L'
+        }
+      }
+    ]
   },
-
-  async createAuction(auction: Auction) {
-    const newAuction = {
-      ...auction,
-      id: auctions.length + 1,
-      status: 'active'
-    };
-    auctions.push(newAuction);
-    return newAuction;
-  },
-
-  async placeBid(auctionId: number, bidAmount: number) {
-    const auction = auctions.find(a => a.id === auctionId);
-    if (!auction) throw new Error('Auction not found');
-    if (bidAmount <= auction.currentBid) throw new Error('Bid must be higher than current bid');
-    if (new Date() > auction.endTime) throw new Error('Auction has ended');
-    
-    auction.currentBid = bidAmount;
-    return auction;
-  },
-
-  async getProducts() {
-    return products.map(product => ({
-      ...product,
-      category_name: categories.find(c => c.id === product.category_id)?.name,
-      username: 'demo_user'
-    }));
-  },
-
-  async getAuctions() {
-    return auctions.map(auction => ({
-      ...auction,
-      username: 'demo_user'
-    }));
-  },
-
-  async getProductsByCategory(categoryId: number) {
-    return products
-      .filter(p => p.category_id === categoryId)
-      .map(product => ({
-        ...product,
-        category_name: categories.find(c => c.id === product.category_id)?.name,
-        username: 'demo_user'
-      }));
-  },
-
-  async getCategories() {
-    return categories;
+  electronics: {
+    'computers-laptops': [
+      {
+        id: 1,
+        title: 'Dell XPS 15 (2023)',
+        description: 'Intel Core i9, 32GB RAM, 1TB SSD, RTX 4070',
+        price: 6500000,
+        discountedPrice: 6200000,
+        location: 'Kampala',
+        category_id: 3,
+        subcategory: 'computers-laptops',
+        user_id: 1,
+        image_url: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=400',
+        attributes: {
+          brand: 'Dell',
+          model: 'XPS 15',
+          processor: 'Intel Core i9-13900H',
+          ram: '32GB',
+          storage: '1TB SSD',
+          gpu: 'NVIDIA RTX 4070',
+          condition: 'Brand New'
+        }
+      }
+    ],
+    'computer-monitors': [
+      {
+        id: 2,
+        title: 'Samsung Odyssey G7 32" Gaming Monitor',
+        description: '240Hz, 1440p, Curved Gaming Monitor',
+        price: 2200000,
+        discountedPrice: null,
+        location: 'Kampala',
+        category_id: 3,
+        subcategory: 'computer-monitors',
+        user_id: 1,
+        image_url: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&q=80&w=400',
+        attributes: {
+          brand: 'Samsung',
+          model: 'Odyssey G7',
+          size: '32"',
+          resolution: '2560x1440',
+          refreshRate: '240Hz',
+          panel: 'VA',
+          condition: 'Brand New'
+        }
+      }
+    ]
   }
+};
+
+// Category-specific filters
+export interface FilterOption {
+  label: string;
+  count?: number;
+  range?: [number | null, number | null];
+}
+
+export interface Filter {
+  id: string;
+  label: string;
+  type: 'range' | 'select' | 'multiselect';
+  min?: number;
+  max?: number;
+  options?: FilterOption[];
+  presets?: FilterOption[];
+}
+
+export interface CategoryFilters {
+  [category: string]: {
+    [subcategory: string]: Filter[];
+  };
+}
+
+export const categoryFilters: CategoryFilters = {
+  electronics: {
+    'computers-laptops': [
+      {
+        id: 'computers-laptops-price',
+        label: 'Price Range',
+        type: 'range',
+        min: 500000,
+        max: 10000000,
+        presets: [
+          { label: 'Under 1M', range: [0, 1000000] },
+          { label: '1M - 2M', range: [1000000, 2000000] },
+          { label: '2M - 5M', range: [2000000, 5000000] },
+          { label: 'Above 5M', range: [5000000, null] }
+        ]
+      },
+      {
+        id: 'computers-laptops-brand',
+        label: 'Brand',
+        type: 'select',
+        options: [
+          { label: 'Dell', count: 2164 },
+          { label: 'HP', count: 1922 },
+          { label: 'Lenovo', count: 1471 },
+          { label: 'Apple', count: 937 },
+          { label: 'Acer', count: 909 }
+        ]
+      },
+      {
+        id: 'computers-laptops-condition',
+        label: 'Condition',
+        type: 'multiselect',
+        options: [
+          { label: 'Brand New', count: 1221 },
+          { label: 'Used - Like New', count: 2642 },
+          { label: 'Used - Good', count: 3526 }
+        ]
+      }
+    ],
+    'computer-monitors': [
+      {
+        id: 'computer-monitors-price',
+        label: 'Price Range',
+        type: 'range',
+        min: 100000,
+        max: 3000000,
+        presets: [
+          { label: 'Under 300K', range: [0, 300000] },
+          { label: '300K - 500K', range: [300000, 500000] },
+          { label: '500K - 1M', range: [500000, 1000000] },
+          { label: 'Above 1M', range: [1000000, null] }
+        ]
+      },
+      {
+        id: 'computer-monitors-brand',
+        label: 'Brand',
+        type: 'select',
+        options: [
+          { label: 'Samsung', count: 864 },
+          { label: 'LG', count: 722 },
+          { label: 'Dell', count: 471 },
+          { label: 'HP', count: 337 },
+          { label: 'Acer', count: 209 }
+        ]
+      },
+      {
+        id: 'computer-monitors-size',
+        label: 'Screen Size',
+        type: 'multiselect',
+        options: [
+          { label: '19-22"', count: 421 },
+          { label: '23-25"', count: 642 },
+          { label: '27"', count: 526 },
+          { label: '32"', count: 321 },
+          { label: '34" & Above', count: 254 }
+        ]
+      }
+    ]
+  }
+};
+
+export const getListings = (category?: string, subcategory?: string): Listing[] => {
+  if (!category) return [];
+  if (!subcategory) {
+    return Object.values(categoryListings[category] || {}).flat();
+  }
+  return categoryListings[category]?.[subcategory] || [];
+};
+
+export const getFilters = (category?: string, subcategory?: string): Filter[] => {
+  if (!category) return [];
+  if (!subcategory) {
+    return Object.values(categoryFilters[category] || {}).flat();
+  }
+  return categoryFilters[category]?.[subcategory] || [];
 };
