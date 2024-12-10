@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Search, Heart, MessageCircle, User, Menu, MapPin } from 'lucide-react';
+import { ShoppingBag, Search, Heart, MessageCircle, User, MapPin } from 'lucide-react';
 import CategoryNav from './CategoryNav';
 
 interface HeaderProps {
@@ -9,8 +9,6 @@ interface HeaderProps {
 }
 
 function Header({ onShowAuth, onShowAddProduct }: HeaderProps) {
-  const [showCategories, setShowCategories] = useState(false);
-
   return (
     <div className="sticky top-0 z-50">
       {/* Main Header */}
